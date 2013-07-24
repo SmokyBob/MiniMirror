@@ -1,0 +1,18 @@
+{
+  "manifest_version": 2,
+  "name": "Mini Mirror",
+  "version": "1",
+  "minimum_chrome_version": "28",
+  "icons": {
+    "16": "video_camera_16.png",
+    "128": "video_camera_128.png"
+  },
+  "app": {
+    "background": {
+      "scripts": ["main.js"]
+    }
+  },
+  "permissions": [
+    "videoCapture"
+  ]
+}

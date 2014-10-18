@@ -1,0 +1,102 @@
+//Use Polymer Bindings
+var mainContent = document.querySelector('#mainContent');
+
+mainContent.addEventListener('template-bound', function(){
+  // Grab elements, create settings, etc.
+  var canvas = document.querySelector("#canvas");
+  var context = canvas.getContext("2d");
+  var video = document.querySelector("#video");
+  var videoObj = { "video": true };
+  var errBack = function(error) {
+      console.log("Video capture error: ", error.code);
+    };
+
+  // Put video listeners into place
+  if(navigator.getUserMedia) { // Standard
+    navigator.getUserMedia(videoObj, function(stream) {
+      video.src = stream;
+      video.play();
+    }, errBack);
+  } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+    navigator.webkitGetUserMedia(videoObj, function(stream){
+      video.src = window.webkitURL.createObjectURL(stream);
+      video.play();
+    }, errBack);
+  }
+
+});
+
+var resizeWindow = function(){
+  var appWindow = chrome.app.window.current();
+  var visibileContent = document.querySelector('#visibileContent');
+
+  appWindow.resizeTo(visibileContent.offsetWidth,visibileContent.offsetHeight-3);
+
+}
+
+mainContent.toggleToolbar = function(){
+  var collapsable = document.querySelector('#collapsableToolbar');
+  //Display/Hide the toolbar
+  collapsable.toggle();
+};
+
+mainContent.collapseResize = function(){
+  resizeWindow();
+};
+
+mainContent.closeWindow = function(){
+  var windowFrame='none';
+  chrome.storage.local.get("windowFrame",function(items){
+    if (items != null){
+      windowFrame=items.windowFrame;
+
+    }
+    var options={};
+    options.windowFrame= windowFrame;
+    var appWindow = chrome.app.window.current();
+    options.top=appWindow.innerBounds.top;
+    options.left=appWindow.innerBounds.left;
+    options.width=appWindow.innerBounds.width;
+    var collapsable = document.querySelector('#collapsableToolbar');
+    options.height=appWindow.innerBounds.height-collapsable.offsetHeight;
+
+    //Store the variables in the local storage
+    chrome.storage.local.set(options, function() {
+          // Notify that we saved.
+          //message('Settings saved');
+          window.close();
+        });
+  });
+
+}
+
+mainContent.changeWindowMode = function(){
+
+  var windowFrame='chrome';
+  chrome.storage.local.get("windowFrame",function(items){
+    if (items != null){
+      windowFrame=items.windowFrame;
+      if (windowFrame=='none'){
+        windowFrame='chrome';
+      }else{
+        windowFrame='none';
+      }
+    }
+    var options={};
+    options.windowFrame= windowFrame;
+    var appWindow = chrome.app.window.current();
+    options.top=appWindow.innerBounds.top;
+    options.left=appWindow.innerBounds.left;
+    options.width=appWindow.innerBounds.width;
+    var collapsable = document.querySelector('#collapsableToolbar');
+    options.height=appWindow.innerBounds.height-collapsable.offsetHeight;
+
+    //Store the variables in the local storage
+    chrome.storage.local.set(options, function() {
+          // Notify that we saved.
+          //message('Settings saved');
+          chrome.runtime.reload(); //Reload the app
+        });
+  });
+
+};

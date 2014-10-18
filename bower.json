@@ -1,0 +1,13 @@
+{
+  "name": "Mini Mirror",
+  "description": "Simple Chrome App that let you show always on top what is acquired from your webcam",
+  "homepage": "",
+  "keywords": [
+  ],
+  "author": "Mauro Solcia",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master",
+    "core-elements": "Polymer/core-elements#master"
+  }
+}

@@ -1,3 +1,4 @@
+[![Stories in Ready](https://badge.waffle.io/smokybob/minimirror.png?label=ready&title=Ready)](https://waffle.io/smokybob/minimirror)
 # Mini Mirror
 
 This is a really simple app that let you show always on top what is acquired from your webcam.

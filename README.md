@@ -1,4 +1,6 @@
-[![Stories in Ready](https://badge.waffle.io/smokybob/minimirror.png?label=ready&title=Ready)](https://waffle.io/smokybob/minimirror)
+[![Stories in Ready](https://badge.waffle.io/smokybob/minimirror.png?label=Ready&title=Ready)](https://waffle.io/smokybob/minimirror)
+[![Stories in In Progress](https://badge.waffle.io/smokybob/minimirror.svg?label=label=In%20Progress&title=In%20Progress)](http://waffle.io/smokybob/minimirror)
+[![Stories in Done](https://badge.waffle.io/smokybob/minimirror.svg?label=Done&title=Done)](http://waffle.io/smokybob/minimirror)
 # Mini Mirror
 
 This is a really simple app that let you show always on top what is acquired from your webcam.

@@ -3,8 +3,8 @@ var mainContent = document.querySelector('#mainContent');
 
 mainContent.addEventListener('template-bound', function(){
   // Grab elements, create settings, etc.
-  var canvas = document.querySelector("#canvas");
-  var context = canvas.getContext("2d");
+  //var canvas = document.querySelector("#canvas");
+  //var context = canvas.getContext("2d");
   var video = document.querySelector("#video");
   var videoObj = { "video": true };
   var errBack = function(error) {
@@ -12,12 +12,7 @@ mainContent.addEventListener('template-bound', function(){
     };
 
   // Put video listeners into place
-  if(navigator.getUserMedia) { // Standard
-    navigator.getUserMedia(videoObj, function(stream) {
-      video.src = stream;
-      video.play();
-    }, errBack);
-  } else if(navigator.webkitGetUserMedia) { // WebKit-prefixed
+  if(navigator.webkitGetUserMedia) { // WebKit-prefixed
     navigator.webkitGetUserMedia(videoObj, function(stream){
       video.src = window.webkitURL.createObjectURL(stream);
       video.play();
@@ -28,9 +23,17 @@ mainContent.addEventListener('template-bound', function(){
 
 var resizeWindow = function(){
   var appWindow = chrome.app.window.current();
-  var visibileContent = document.querySelector('#visibileContent');
+  var visibileContent = document.querySelector('#video');
 
-  appWindow.resizeTo(visibileContent.offsetWidth,visibileContent.offsetHeight-3);
+  chrome.storage.local.get("windowFrame",function(items){
+    var headerHeight = 0;
+    var windowFrame='none';
+
+    if (items.windowFrame!='none'){
+      headerHeight=33;
+    }
+    appWindow.resizeTo(visibileContent.offsetWidth,visibileContent.offsetHeight+headerHeight);
+  });
 
 }
 
@@ -57,8 +60,7 @@ mainContent.closeWindow = function(){
     options.top=appWindow.innerBounds.top;
     options.left=appWindow.innerBounds.left;
     options.width=appWindow.innerBounds.width;
-    var collapsable = document.querySelector('#collapsableToolbar');
-    options.height=appWindow.innerBounds.height-collapsable.offsetHeight;
+    options.height=appWindow.innerBounds.height;
 
     //Store the variables in the local storage
     chrome.storage.local.set(options, function() {
@@ -88,8 +90,7 @@ mainContent.changeWindowMode = function(){
     options.top=appWindow.innerBounds.top;
     options.left=appWindow.innerBounds.left;
     options.width=appWindow.innerBounds.width;
-    var collapsable = document.querySelector('#collapsableToolbar');
-    options.height=appWindow.innerBounds.height-collapsable.offsetHeight;
+    options.height=appWindow.innerBounds.height;
 
     //Store the variables in the local storage
     chrome.storage.local.set(options, function() {

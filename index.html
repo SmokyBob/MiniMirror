@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <title>Mini Mirror</title>
 
+    <link rel="import" href="bower_components/polymer/polymer.html">
     <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
     <link rel="import" href="bower_components/core-icons/core-icons.html">
     <link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
@@ -11,6 +12,13 @@
     <style>
       .title{
         -webkit-app-region: drag; /*Make the Title Draggable with in frameless mode*/
+      }
+      #collapsableToolbar{
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 1000;
       }
     </style>
   </head>
@@ -25,8 +33,8 @@
             </core-toolbar>
           </core-collapse>
           <video id="video" width='100%' height='auto' on-tap="{{toggleToolbar}}"></video>
+
         </div>
-        <canvas id="canvas"></canvas>
       </template>
       <script language="javascript" type="text/javascript" src="code.js"></script>
   </body>

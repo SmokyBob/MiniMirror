@@ -32,7 +32,10 @@
               <core-icon-button icon="close" on-tap="{{closeWindow}}"></core-icon-button>
             </core-toolbar>
           </core-collapse>
-          <video id="video" width='100%' height='auto' on-tap="{{toggleToolbar}}"></video>
+          <canvas id="videoscreen" on-tap="{{toggleToolbar}}">
+            <p>Sorry your browser does not support HTML5</p>
+          </canvas>
+          <video id="video" width='100%' height='auto' style="visibility:hidden"></video>
 
         </div>
       </template>

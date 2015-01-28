@@ -35,6 +35,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
         },
         resizable:true,
         frame:windowFrame,
+        alphaEnabled: true,
         alwaysOnTop:true
       });
     });

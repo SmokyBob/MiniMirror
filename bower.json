@@ -7,7 +7,7 @@
   "author": "Mauro Solcia",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.3",
-    "core-elements": "Polymer/core-elements#^0.5.3"
+    "polymer": "Polymer/polymer#^0.5.4",
+    "core-elements": "Polymer/core-elements#^0.5.4"
   }
 }

@@ -102,10 +102,14 @@ mainContent.closeWindow = function(){
 
     //Store the variables in the local storage
     chrome.storage.local.set(options, function() {
-          // Notify that we saved.
-          //message('Settings saved');
-          window.close();
-        });
+      // Notify that we saved.
+      //Close all the app windows
+      var windowArray = chrome.app.window.getAll();
+      for(var i=0;i<windowArray.length;i++){
+        var win = windowArray[i];
+        win.contentWindow.close();
+      }
+    });
   });
 
 }
@@ -138,4 +142,17 @@ mainContent.changeWindowMode = function(){
         });
   });
 
+};
+
+mainContent.openOption = function(){
+  //Create the new window with the default values or the one from the local storage
+  chrome.app.window.create('options.html', {
+    bounds: {
+      width: 360,
+      height: 360
+    },
+    resizable:true,
+    frame:"chrome",
+    alwaysOnTop:true
+  });
 };

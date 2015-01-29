@@ -17,44 +17,47 @@ mainContent.addEventListener('template-bound', function(){
       video.src = window.URL.createObjectURL(stream);
       video.play();
 
-      setInterval(function() {
-        if (video.paused || video.ended) return;
-        var v = document.querySelector("#video");
-
-        var w = v.offsetWidth;
-        var h = v.offsetHeight;
-        var canvas = document.getElementById("videoscreen");
-        canvas.setAttribute('width', w);
-        canvas.setAttribute('height', h);
-        var con = canvas.getContext('2d');
-
-        con.fillRect(0, 0, w, h);//
-        con.drawImage(v, 0, 0, w, h);
-
-        var imageData = con.getImageData(0, 0, w, h);
-        var data = imageData.data;
-
-        //Really Green Value
-        selectedR = 25;
-        selectedG = 40;
-        selectedB = 80;
-
-        for (var i = 0; i < data.length; i += 4) {
-          var r = data[i + 0];
-          var g = data[i + 1];
-          var b = data[i + 2];
-          // compare rgb levels for green and set alphachannel to 0;
-          if (r <= selectedR && b <= selectedB && g >= selectedG) {
-
-            data[i + 3]=0;
-          }
-        }
-        con.putImageData(imageData, 0, 0);
-      }, 17);//60fps refresh rate
+      ChromaKey();
     }, errBack);
   }
 
 });
+
+function ChromaKey(){
+  window.requestAnimationFrame(ChromaKey);
+  var v = document.querySelector("#video");
+  if (v.paused || v.ended) return;
+
+  var w = v.offsetWidth;
+  var h = v.offsetHeight;
+  var canvas = document.getElementById("videoscreen");
+  canvas.setAttribute('width', w);
+  canvas.setAttribute('height', h);
+  var con = canvas.getContext('2d');
+
+  con.fillRect(0, 0, w, h);//
+  con.drawImage(v, 0, 0, w, h);
+
+  var imageData = con.getImageData(0, 0, w, h);
+  var data = imageData.data;
+
+  //Really Green Value
+  selectedR = 25;
+  selectedG = 40;
+  selectedB = 80;
+
+  for (var i = 0; i < data.length; i += 4) {
+    var r = data[i + 0];
+    var g = data[i + 1];
+    var b = data[i + 2];
+    // compare rgb levels for green and set alphachannel to 0;
+    if (r <= selectedR && b <= selectedB && g >= selectedG) {
+
+      data[i + 3]=0;
+    }
+  }
+  con.putImageData(imageData, 0, 0);
+}
 
 var resizeWindow = function(){
   var appWindow = chrome.app.window.current();

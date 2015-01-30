@@ -1,15 +1,24 @@
 //Use Polymer Bindings
 var mainContent = document.querySelector('#mainContent');
-//TODO:Load the color from the storage
-mainContent.selectedColor = {};
-//Really Green Value
-mainContent.selectedColor.r=25;
-mainContent.selectedColor.g=40;
-mainContent.selectedColor.b=80;
-
-mainContent.tolerancePercentage = 20;
 
 mainContent.addEventListener('template-bound', function(){
+
+  chrome.storage.local.get(["selectedColor","tolerancePercentage"],
+    function(items){
+      if (items.selectedColor != null){
+        mainContent.selectedColor=items.selectedColor;
+        mainContent.tolerancePercentage=items.tolerancePercentage;
+      }else{
+        mainContent.selectedColor={};
+        //Really Green Value
+        mainContent.selectedColor.r=56;
+        mainContent.selectedColor.g=166;
+        mainContent.selectedColor.b=0;
+        //Default tolerance 20%
+        mainContent.tolerancePercentage = 20;
+      }
+    });
+
   // Grab elements, create settings, etc.
   var video = document.querySelector("#video");
   var videoObj = { "video": true };

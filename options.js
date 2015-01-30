@@ -14,21 +14,33 @@ mainContent.addEventListener('template-bound', function(){
     };
   }
 
-  //Get the current color
+  //Get the current color and tolerance
   mainContent.$.colorDisplay.style.backgroundColor = mainContent.$.color_picker.rgbToHex(miniMirror.selectedColor);
   mainContent.tolerancePercentage = miniMirror.tolerancePercentage;
-
 
 });
 
 mainContent.tolerancePercentageChanged = function(e){
   if (miniMirror){
+    //Update the tolerance applied on the image
     miniMirror.tolerancePercentage = mainContent.tolerancePercentage;
+    //Store the tolerance
+    var options = {'tolerancePercentage':miniMirror.tolerancePercentage};
+    chrome.storage.local.set(options, function() {
+      //debugger;
+    });
   }
 }
 
 mainContent.colorSelected = function(event){
   var selColor=event.detail;
+  //Update the Chroma Key
   miniMirror.selectedColor = selColor.rgb;
   mainContent.$.colorDisplay.style.backgroundColor = mainContent.$.color_picker.rgbToHex(miniMirror.selectedColor);
+
+  //Store the selected color
+  var options = {'selectedColor':miniMirror.selectedColor};
+  chrome.storage.local.set(options, function() {
+      //debugger;
+    });
 };

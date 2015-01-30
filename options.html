@@ -9,13 +9,14 @@
     <link rel="import" href="bower_components/core-icons/core-icons.html">
     <link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
     <link rel="import" href="bower_components/core-collapse/core-collapse.html">
+    <link rel="import" href="bower_components/color-picker-element/dist/color-picker.html">
     <style>
 
     </style>
   </head>
   <body unresolved fullbleed>
-      <template id='mainContent' is="auto-binding">
-        Options
+      <template id='optionContent' is="auto-binding">
+        <color-picker width="200" height="200" on-colorselected="{{colorSelected}}"></color-picker>
       </template>
       <script language="javascript" type="text/javascript" src="options.js"></script>
   </body>

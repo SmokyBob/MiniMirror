@@ -54,7 +54,7 @@ function ChromaKey(){
     var g = data[i + 1];
     var b = data[i + 2];
     // compare rgb levels for green and set alphachannel to 0;
-    //Color in +/- 5% range
+    //Color in +/- 20% range
     var percVal = (255*(20/100));
     if ((r >= (selectedColor.r - percVal) && r <= (selectedColor.r + percVal)) &&
         (b >= (selectedColor.b - percVal) && b <= (selectedColor.b + percVal)) &&

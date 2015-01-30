@@ -16,7 +16,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
   //Get the variables from the local storage
   chrome.storage.local.get(["windowFrame","top","left","width","height"],
     function(items){
-      if (items != null){
+      if (items.windowFrame != null){
         windowFrame=items.windowFrame;
         width=items.width;
         height=items.height;

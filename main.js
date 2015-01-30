@@ -23,21 +23,36 @@ chrome.app.runtime.onLaunched.addListener(function() {
         left=items.left;
         top=items.top;
       }
-
-      //Create the new window with the default values or the one from the local storage
-      chrome.app.window.create('index.html', {
-        //id:'miniMirror',
-        bounds: {
-          width: width,
-          height: height,
-          top:top,
-          left:left
-        },
-        resizable:true,
-        frame:windowFrame,
-        alphaEnabled: true,
-        alwaysOnTop:true
-      });
+      if(windowFrame=='none'){
+        //Create the new window with the default values or the one from the local storage
+        chrome.app.window.create('index.html', {
+          //id:'miniMirror',
+          bounds: {
+            width: width,
+            height: height,
+            top:top,
+            left:left
+          },
+          resizable:true,
+          frame:windowFrame,
+          alphaEnabled: true,
+          alwaysOnTop:true
+        });
+      }else{
+        //Create the new window with the default values or the one from the local storage
+        chrome.app.window.create('index.html', {
+          //id:'miniMirror',
+          bounds: {
+            width: width,
+            height: height,
+            top:top,
+            left:left
+          },
+          resizable:true,
+          frame:windowFrame,
+          alwaysOnTop:true
+        });
+      }
     });
 
 });

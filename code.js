@@ -1,16 +1,16 @@
 //Use Polymer Bindings
 var mainContent = document.querySelector('#mainContent');
 //TODO:Load the color from the storage
-var selectedColor = {};
+mainContent.selectedColor = {};
 //Really Green Value
-selectedColor.r=25;
-selectedColor.g=40;
-selectedColor.b=80;
+mainContent.selectedColor.r=25;
+mainContent.selectedColor.g=40;
+mainContent.selectedColor.b=80;
+
+mainContent.tolerancePercentage = 20;
 
 mainContent.addEventListener('template-bound', function(){
   // Grab elements, create settings, etc.
-  //var canvas = document.querySelector("#canvas");
-  //var context = canvas.getContext("2d");
   var video = document.querySelector("#video");
   var videoObj = { "video": true };
   var errBack = function(error) {
@@ -53,14 +53,17 @@ function ChromaKey(){
     var r = data[i + 0];
     var g = data[i + 1];
     var b = data[i + 2];
+
+    //get the tolerance value from the selected percentage
+    var percVal = (255*(mainContent.tolerancePercentage/100));
+
     // compare rgb levels for green and set alphachannel to 0;
-    //Color in +/- 20% range
-    var percVal = (255*(20/100));
+    var selectedColor = mainContent.selectedColor;
     if ((r >= (selectedColor.r - percVal) && r <= (selectedColor.r + percVal)) &&
         (b >= (selectedColor.b - percVal) && b <= (selectedColor.b + percVal)) &&
         (g >= (selectedColor.g - percVal) && g <= (selectedColor.g + percVal)))
     {
-      data[i + 3]=0;
+      data[i + 3]=0;//Set aplha to 0 to make the pixel transparent
     }
   }
   con.putImageData(imageData, 0, 0);
@@ -156,10 +159,10 @@ mainContent.openOption = function(){
   chrome.app.window.create('options.html', {
     id:"options",
     bounds: {
-      width: 360,
+      width: 480,
       height: 360
     },
-    resizable:true,
+    resizable:false,
     frame:"chrome",
     alwaysOnTop:true
   });

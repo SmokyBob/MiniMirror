@@ -5,18 +5,25 @@
     <title>Mini Mirror</title>
 
     <link rel="import" href="bower_components/polymer/polymer.html">
-    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-    <link rel="import" href="bower_components/core-icons/core-icons.html">
-    <link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
-    <link rel="import" href="bower_components/core-collapse/core-collapse.html">
     <link rel="import" href="bower_components/color-picker-element/dist/color-picker.html">
+    <link rel="import" href="bower_components/paper-slider/paper-slider.html">
     <style>
 
     </style>
   </head>
   <body unresolved fullbleed>
-      <template id='optionContent' is="auto-binding">
-        <color-picker width="200" height="200" on-colorselected="{{colorSelected}}"></color-picker>
+      <template id='optionContent' is="auto-binding" >
+        <div layout horizontal>
+          <color-picker id='color_picker' on-colorselected="{{colorSelected}}" width="360" height="360"></color-picker>
+          <div layout vertical flex style="padding-left:5px">
+            <div>Selected Color</div>
+            <div style="height: 30px;" id="colorDisplay"></div>
+            <div>Tolerance</div>
+            <paper-slider id="tolerance" step="1" pin snaps immediateValue="{{tolerancePercentage}}" style='width:auto'
+            on-immediate-value-change='{{tolerancePercentageChanged}}'>
+            </paper-slider>
+          </div>
+        </div>
       </template>
       <script language="javascript" type="text/javascript" src="options.js"></script>
   </body>

@@ -1,5 +1,11 @@
 //Use Polymer Bindings
 var mainContent = document.querySelector('#mainContent');
+//TODO:Load the color from the storage
+var selectedColor = {};
+//Really Green Value
+selectedColor.r=25;
+selectedColor.g=40;
+selectedColor.b=80;
 
 mainContent.addEventListener('template-bound', function(){
   // Grab elements, create settings, etc.
@@ -30,6 +36,8 @@ function ChromaKey(){
 
   var w = v.offsetWidth;
   var h = v.offsetHeight;
+
+  //set the canvas Dimensions
   var canvas = document.getElementById("videoscreen");
   canvas.setAttribute('width', w);
   canvas.setAttribute('height', h);
@@ -41,18 +49,17 @@ function ChromaKey(){
   var imageData = con.getImageData(0, 0, w, h);
   var data = imageData.data;
 
-  //Really Green Value
-  selectedR = 25;
-  selectedG = 40;
-  selectedB = 80;
-
   for (var i = 0; i < data.length; i += 4) {
     var r = data[i + 0];
     var g = data[i + 1];
     var b = data[i + 2];
     // compare rgb levels for green and set alphachannel to 0;
-    if (r <= selectedR && b <= selectedB && g >= selectedG) {
-
+    //Color in +/- 5% range
+    var percVal = (255*(20/100));
+    if ((r >= (selectedColor.r - percVal) && r <= (selectedColor.r + percVal)) &&
+        (b >= (selectedColor.b - percVal) && b <= (selectedColor.b + percVal)) &&
+        (g >= (selectedColor.g - percVal) && g <= (selectedColor.g + percVal)))
+    {
       data[i + 3]=0;
     }
   }
@@ -147,6 +154,7 @@ mainContent.changeWindowMode = function(){
 mainContent.openOption = function(){
   //Create the new window with the default values or the one from the local storage
   chrome.app.window.create('options.html', {
+    id:"options",
     bounds: {
       width: 360,
       height: 360

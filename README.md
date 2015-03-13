@@ -3,6 +3,8 @@
 [![Stories in Done](https://badge.waffle.io/smokybob/minimirror.svg?label=Done&title=Done)](http://waffle.io/smokybob/minimirror)
 # Mini Mirror
 
+[![Join the chat at https://gitter.im/SmokyBob/MiniMirror](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/SmokyBob/MiniMirror?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 This is a really simple app that let you show always on top what is acquired from your webcam.
 
 Using Hangout On Air or other ScreenRecording Extensions for Chrome (I personally like [Screencastify](https://chrome.google.com/webstore/detail/screencastify-screen-vide/mmeijimgabbpbgpdklnllpncmdofkcpn)).

@@ -1,7 +1,7 @@
 //Use Polymer Bindings
 var mainContent = document.querySelector('#mainContent');
 
-mainContent.addEventListener('template-bound', function(){
+mainContent.addEventListener('dom-change', function(){
   // Grab elements, create settings, etc.
   //var canvas = document.querySelector("#canvas");
   //var context = canvas.getContext("2d");
@@ -14,7 +14,7 @@ mainContent.addEventListener('template-bound', function(){
   // Put video listeners into place
   if(navigator.webkitGetUserMedia) { // WebKit-prefixed
     navigator.webkitGetUserMedia(videoObj, function(stream){
-      video.src = window.webkitURL.createObjectURL(stream);
+      video.src = window.URL.createObjectURL(stream);
       video.play();
     }, errBack);
   }
@@ -35,7 +35,7 @@ var resizeWindow = function(){
     appWindow.resizeTo(visibileContent.offsetWidth,visibileContent.offsetHeight+headerHeight);
   });
 
-}
+};
 
 mainContent.toggleToolbar = function(){
   var collapsable = document.querySelector('#collapsableToolbar');
@@ -70,7 +70,7 @@ mainContent.closeWindow = function(){
         });
   });
 
-}
+};
 
 mainContent.changeWindowMode = function(){
 

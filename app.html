@@ -3,12 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>Mini Mirror</title>
-
+    
+    <script src="setShadow.js"></script>
+    
     <link rel="import" href="bower_components/polymer/polymer.html">
-    <link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
-    <link rel="import" href="bower_components/core-icons/core-icons.html">
-    <link rel="import" href="bower_components/core-icon-button/core-icon-button.html">
-    <link rel="import" href="bower_components/core-collapse/core-collapse.html">
+    <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
+    <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
+    <link rel="import" href="bower_components/iron-collapse/iron-collapse.html">
     <style>
       .title{
         -webkit-app-region: drag; /*Make the Title Draggable with in frameless mode*/
@@ -22,17 +24,17 @@
       }
     </style>
   </head>
-  <body unresolved fullbleed>
-      <template id='mainContent' is="auto-binding">
+  <body class="fullbleed">
+      <template id='mainContent' is="dom-bind">
         <div id='visibileContent'>
-          <core-collapse id='collapsableToolbar' on-core-resize="{{collapseResize}}">
-            <core-toolbar>
-              <div class='title' flex>Mini Mirror</div>
-              <core-icon-button icon="settings-overscan" on-tap="{{changeWindowMode}}"></core-icon-button>
-              <core-icon-button icon="close" on-tap="{{closeWindow}}"></core-icon-button>
-            </core-toolbar>
-          </core-collapse>
-          <video id="video" width='100%' height='auto' on-tap="{{toggleToolbar}}"></video>
+          <iron-collapse id='collapsableToolbar' on-core-resize="collapseResize">
+            <paper-toolbar>
+              <div class="title flex">Mini Mirror</div>
+              <paper-icon-button icon="settings-overscan" on-tap="changeWindowMode"></paper-icon-button>
+              <paper-icon-button icon="close" on-tap="closeWindow"></paper-icon-button>
+            </paper-toolbar>
+          </iron-collapse>
+          <video id="video" width="100%" height="auto" on-tap="toggleToolbar"></video>
 
         </div>
       </template>

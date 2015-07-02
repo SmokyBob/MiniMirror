@@ -12,22 +12,25 @@
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
     <link rel="import" href="bower_components/iron-collapse/iron-collapse.html">
     <style>
-      .title{
+      .title {
         -webkit-app-region: drag; /*Make the Title Draggable with in frameless mode*/
       }
-      #collapsableToolbar{
+      #collapsableToolbar {
         position: absolute;
         top: 0;
         left: 0;
         right: 0;
         z-index: 1000;
       }
+      --paper-toolbar {
+        --paper-toolbar-background: var(--google-green-500);
+      }
     </style>
   </head>
   <body class="fullbleed">
       <template id='mainContent' is="dom-bind">
         <div id='visibileContent'>
-          <iron-collapse id='collapsableToolbar' on-core-resize="collapseResize">
+          <iron-collapse id='collapsableToolbar' on-opened-changed="collapseResize">
             <paper-toolbar>
               <div class="title flex">Mini Mirror</div>
               <paper-icon-button icon="settings-overscan" on-tap="changeWindowMode"></paper-icon-button>

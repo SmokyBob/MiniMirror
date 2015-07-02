@@ -25,7 +25,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
       }
 
       //Create the new window with the default values or the one from the local storage
-      chrome.app.window.create('index.html', {
+      chrome.app.window.create('app.html', {
         //id:'miniMirror',
         bounds: {
           width: width,

@@ -1,14 +1,22 @@
 {
   "name": "Mini Mirror Edge",
-  "description": "Simple Chrome App that let you show always on top what is acquired from your webcam + Edge featurer \\o/",
+  "description": "Simple Chrome App that let you show always on top what is acquired from your webcam + Edge features \\o/",
   "homepage": "",
   "keywords": [],
   "author": "Mauro Solcia",
   "private": true,
   "dependencies": {
-    "polymer": "Polymer/polymer#^0.5.4",
-    "core-elements": "Polymer/core-elements#^0.5.4",
-    "paper-elements": "Polymer/paper-elements#^0.5.4",
-    "color-picker-element": "~0.0.2"
+    "polymer": "Polymer/polymer#^1.0.5",
+    "paper-toolbar": "PolymerElements/paper-toolbar#~1.0.2",
+    "paper-icon-button": "PolymerElements/paper-icon-button#~1.0.2",
+    "iron-collapse": "PolymerElements/iron-collapse#~1.0.1",
+    "iron-icons": "PolymerElements/iron-icons#~1.0.3",
+    "iron-icon": "PolymerElements/iron-icon#~1.0.1",
+    "iron-flex-layout": "PolymerElements/iron-flex-layout#no-deep",
+    "color-picker-element": "bbrewer97202/color-picker-element#~0.0.3",
+    "paper-slider": "polymerElements/paper-slider#~1.0.3"
+  },
+  "resolutions": {
+    "iron-flex-layout": "no-deep"
   }
 }

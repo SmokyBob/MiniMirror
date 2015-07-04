@@ -3,6 +3,8 @@
   <head>
     <meta charset="utf-8">
     <title>Mini Mirror</title>
+    
+    <script src="setShadow.js"></script>
 
     <link rel="import" href="bower_components/polymer/polymer.html">
     <link rel="import" href="bower_components/color-picker-element/dist/color-picker.html">
@@ -19,7 +21,7 @@
             <div>Selected Color</div>
             <div style="height: 30px;" id="colorDisplay"></div>
             <div>Tolerance</div>
-            <paper-slider id="tolerance" step="1" pin snaps immediateValue="{{tolerancePercentage}}" style='width:auto'
+            <paper-slider id="tolerance" step="1" pin snaps immediate-value="{{tolerancePercentage}}" style='width:auto'
             on-immediate-value-change='{{tolerancePercentageChanged}}'>
             </paper-slider>
           </div>

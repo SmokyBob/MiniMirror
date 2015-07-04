@@ -123,6 +123,8 @@ mainContent.closeWindow = function() {
     options.left = appWindow.innerBounds.left;
     options.width = appWindow.innerBounds.width;
     options.height = appWindow.innerBounds.height;
+    options.tolerancePercentage = mainContent.tolerancePercentage;
+    options.selectedColor = mainContent.selectedColor;
 
     //Store the variables in the local storage
     chrome.storage.local.set(options, function() {

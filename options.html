@@ -6,23 +6,25 @@
     
     <script src="setShadow.js"></script>
 
-    <link rel="import" href="bower_components/polymer/polymer.html">
-    <link rel="import" href="bower_components/color-picker-element/dist/color-picker.html">
+    <link rel="import" href="bower_components/color-picker-element/src/color-picker.html">
     <link rel="import" href="bower_components/paper-slider/paper-slider.html">
+    <link rel="import" href="bower_components/iron-flex-layout/classes.html">
     <style>
 
     </style>
   </head>
-  <body unresolved fullbleed>
-      <template id='optionContent' is="auto-binding" >
-        <div layout horizontal>
-          <color-picker id='color_picker' on-colorselected="{{colorSelected}}" width="360" height="360"></color-picker>
-          <div layout vertical flex style="padding-left:5px">
+  <body class="fullbleed">
+      <template id="optionContent" is="dom-bind" >
+        <div class="layout horizontal">
+          <color-picker id="colorPicker" on-colorselected="colorSelected" width="360" height="360"></color-picker>
+          <div class="layout vertical flex" style="padding-left:5px">
             <div>Selected Color</div>
             <div style="height: 30px;" id="colorDisplay"></div>
             <div>Tolerance</div>
-            <paper-slider id="tolerance" step="1" pin snaps immediate-value="{{tolerancePercentage}}" style='width:auto'
-            on-immediate-value-change='{{tolerancePercentageChanged}}'>
+            <paper-slider id="tolerance" step="1" pin snaps 
+            style="width:auto" value="{{tolerancePercentage}}"
+            on-immediate-value-change="immediatePercChanged"
+            on-value-change="tolerancePercentageChanged">
             </paper-slider>
           </div>
         </div>

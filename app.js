@@ -1,11 +1,12 @@
+//This will be set by the Script that create this window
+
 //Use Polymer Bindings
 var mainContent = document.querySelector('#mainContent');
 
 mainContent.addEventListener('dom-change', function() {
-
-  chrome.storage.local.get(['selectedColor', 'tolerancePercentage'],
+  chrome.storage.local.get(['selectedColor', 'tolerancePercentage', 'mirrored'],
     function(items) {
-      if (items.selectedColor != null) {
+      if (items.selectedColor) {
         mainContent.selectedColor = items.selectedColor;
         mainContent.tolerancePercentage = items.tolerancePercentage;
       } else {
@@ -17,6 +18,8 @@ mainContent.addEventListener('dom-change', function() {
         //Default tolerance 20%
         mainContent.tolerancePercentage = 20;
       }
+      //Mirrored video by default
+      mainContent.mirrored = ((items.mirrored !== null) ? items.mirrored : true);
     });
 
   // Grab elements, create settings, etc.
@@ -96,7 +99,6 @@ var resizeWindow = function() {
                          visibileContent.offsetHeight + headerHeight);
     });
   }
-
 };
 
 var collapseTimeout = null;
@@ -114,6 +116,14 @@ mainContent.toggleToolbar = function() {
       collapsable.opened = false;
     }, 5000);
   }
+};
+
+mainContent._mirroredClass = function(isMirrored) {
+  return ((isMirrored) ? 'mirrored' : '');
+};
+
+mainContent.swapHoriz = function(){
+  mainContent.mirrored = !mainContent.mirrored;
 };
 
 mainContent.collapseResize = function() {
@@ -136,6 +146,7 @@ mainContent.closeWindow = function() {
     options.height = appWindow.innerBounds.height;
     options.tolerancePercentage = mainContent.tolerancePercentage;
     options.selectedColor = mainContent.selectedColor;
+    options.mirrored = mainContent.mirrored;
 
     //Store the variables in the local storage
     chrome.storage.local.set(options, function() {
@@ -155,7 +166,7 @@ mainContent.changeWindowMode = function() {
 
   var windowFrame = 'chrome';
   chrome.storage.local.get('windowFrame', function(items) {
-    if (items != null) {
+    if (items) {
       windowFrame = items.windowFrame;
       if (windowFrame == 'none') {
         windowFrame = 'chrome';
@@ -170,6 +181,7 @@ mainContent.changeWindowMode = function() {
     options.left = appWindow.innerBounds.left;
     options.width = appWindow.innerBounds.width;
     options.height = appWindow.innerBounds.height;
+    options.mirrored = mainContent.mirrored;
 
     //Store the variables in the local storage
     chrome.storage.local.set(options, function() {

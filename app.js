@@ -3,6 +3,10 @@
 //Use Polymer Bindings
 var mainContent = document.querySelector('#mainContent');
 
+mainContent.videoSources = [];
+
+
+
 mainContent.addEventListener('dom-change', function() {
   chrome.storage.local.get(['selectedColor', 'tolerancePercentage', 'mirrored'],
     function(items) {
@@ -21,24 +25,8 @@ mainContent.addEventListener('dom-change', function() {
       //Mirrored video by default
       mainContent.mirrored = ((items.mirrored !== null) ? items.mirrored : true);
     });
-
-  // Grab elements, create settings, etc.
-  var video = document.querySelector('#video');
-  var videoObj = {'video': true};
-  var errBack = function(error) {
-    console.log('Video capture error: ', error.code);
-  };
-
-  // Put video listeners into place
-  if (navigator.webkitGetUserMedia) { // WebKit-prefixed
-    navigator.webkitGetUserMedia(videoObj, function(stream) {
-      video.src = window.URL.createObjectURL(stream);
-      video.play();
-
-      ChromaKey();
-    }, errBack);
-  }
-
+    //Set the first source
+    mainContent.swapSource();
 });
 
 function ChromaKey() {
@@ -101,6 +89,20 @@ var resizeWindow = function() {
   }
 };
 
+MediaStreamTrack.getSources(gotSources);
+
+function gotSources(sourceInfos) {
+  for (var i = 0; i !== sourceInfos.length; ++i) {
+    var sourceInfo = sourceInfos[i];
+    var option = document.createElement('option');
+    option.value = sourceInfo.id;
+    if (sourceInfo.kind === 'video') {
+      mainContent.videoSources.push(option);
+    }  
+  }
+  
+}
+
 var collapseTimeout = null;
 
 mainContent.toggleToolbar = function() {
@@ -124,6 +126,43 @@ mainContent._mirroredClass = function(isMirrored) {
 
 mainContent.swapHoriz = function(){
   mainContent.mirrored = !mainContent.mirrored;
+};
+
+mainContent.sourceIdx = -1;
+
+mainContent.swapSource = function(){
+  mainContent.sourceIdx = mainContent.sourceIdx + 1;
+  
+  if(mainContent.videoSources.length == mainContent.sourceIdx){
+    mainContent.sourceIdx = 0;
+  }
+  
+  // Grab elements, create settings, etc.
+  var video = document.querySelector('#video');
+  var errBack = function(error) {
+    console.log('Video capture error: ', error.code);
+  };
+  
+  var videoObj = {video: true};
+  
+  if (mainContent.videoSources.length > 0) {
+    videoObj = {
+      video: {
+        optional: [{
+          sourceId: mainContent.videoSources[mainContent.sourceIdx].value
+        }]
+      }
+    };
+  }
+  // Put video listeners into place
+  if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+    navigator.webkitGetUserMedia(videoObj, function(stream) {
+      video.src = window.URL.createObjectURL(stream);
+      video.play();
+
+      ChromaKey();
+    }, errBack);
+  }
 };
 
 mainContent.collapseResize = function() {

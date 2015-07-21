@@ -25,8 +25,20 @@ mainContent.addEventListener('dom-change', function() {
       //Mirrored video by default
       mainContent.mirrored = ((items.mirrored !== null) ? items.mirrored : true);
     });
-    //Set the first source
-    mainContent.swapSource();
+  
+  MediaStreamTrack.getSources(
+    function (sourceInfos) {
+      for (var i = 0; i !== sourceInfos.length; ++i) {
+        var sourceInfo = sourceInfos[i];
+        var option = document.createElement('option');
+        option.value = sourceInfo.id;
+        if (sourceInfo.kind === 'video') {
+          mainContent.videoSources.push(option);
+        }  
+      }
+      //Set the first source
+      mainContent.swapSource();
+    });
 });
 
 function ChromaKey() {
@@ -89,19 +101,7 @@ var resizeWindow = function() {
   }
 };
 
-MediaStreamTrack.getSources(gotSources);
 
-function gotSources(sourceInfos) {
-  for (var i = 0; i !== sourceInfos.length; ++i) {
-    var sourceInfo = sourceInfos[i];
-    var option = document.createElement('option');
-    option.value = sourceInfo.id;
-    if (sourceInfo.kind === 'video') {
-      mainContent.videoSources.push(option);
-    }  
-  }
-  
-}
 
 var collapseTimeout = null;
 

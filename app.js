@@ -37,10 +37,21 @@ var resizeWindow = function(){
 
 };
 
+var collapseTimeout = null;
+
 mainContent.toggleToolbar = function(){
   var collapsable = document.querySelector('#collapsableToolbar');
   //Display/Hide the toolbar
   collapsable.toggle();
+  if (collapseTimeout) {
+    clearTimeout(collapseTimeout);
+  }
+  if (collapsable.opened){
+    //AutoCollapse the toolbar after 5 second
+    collapseTimeout = setTimeout(function() {
+      collapsable.opened = false;
+    }, 5000);
+  }
 };
 
 mainContent.collapseResize = function(){
@@ -50,9 +61,8 @@ mainContent.collapseResize = function(){
 mainContent.closeWindow = function(){
   var windowFrame='none';
   chrome.storage.local.get("windowFrame",function(items){
-    if (items != null){
+    if (items){
       windowFrame=items.windowFrame;
-
     }
     var options={};
     options.windowFrame= windowFrame;
@@ -76,7 +86,7 @@ mainContent.changeWindowMode = function(){
 
   var windowFrame='chrome';
   chrome.storage.local.get("windowFrame",function(items){
-    if (items != null){
+    if (items){
       windowFrame=items.windowFrame;
       if (windowFrame=='none'){
         windowFrame='chrome';

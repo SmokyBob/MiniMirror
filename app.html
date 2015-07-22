@@ -9,6 +9,7 @@
     <link rel="import" href="bower_components/polymer/polymer.html">
     <link rel="import" href="bower_components/paper-toolbar/paper-toolbar.html">
     <link rel="import" href="bower_components/iron-icons/iron-icons.html">
+    <link rel="import" href="bower_components/iron-icons/image-icons.html">
     <link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html">
     <link rel="import" href="bower_components/iron-collapse/iron-collapse.html">
     <style is="custom-style">
@@ -25,6 +26,9 @@
       paper-toolbar {
         --paper-toolbar-background: var(--google-green-500);
       }
+      .mirrored{
+        transform: rotateY(180deg);
+      }
     </style>
   </head>
   <body class="fullbleed">
@@ -33,11 +37,14 @@
           <iron-collapse id='collapsableToolbar' on-opened-changed="collapseResize">
             <paper-toolbar>
               <div class="title flex">Mini Mirror</div>
+              <paper-icon-button icon="image:camera-alt" on-tap="swapSource"></paper-icon-button>
+              <paper-icon-button icon="swap-horiz" on-tap="swapHoriz"></paper-icon-button>
               <paper-icon-button icon="settings-overscan" on-tap="changeWindowMode"></paper-icon-button>
               <paper-icon-button icon="close" on-tap="closeWindow"></paper-icon-button>
             </paper-toolbar>
           </iron-collapse>
-          <video id="video" width="100%" height="auto" on-tap="toggleToolbar"></video>
+          <video id="video" width="100%" height="auto" 
+              class$="[[_mirroredClass(mirrored)]]" on-tap="toggleToolbar"></video>
 
         </div>
       </template>

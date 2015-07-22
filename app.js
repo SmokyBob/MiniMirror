@@ -1,23 +1,28 @@
 //Use Polymer Bindings
 var mainContent = document.querySelector('#mainContent');
 
-mainContent.addEventListener('dom-change', function(){
-  // Grab elements, create settings, etc.
-  //var canvas = document.querySelector("#canvas");
-  //var context = canvas.getContext("2d");
-  var video = document.querySelector("#video");
-  var videoObj = { "video": true };
-  var errBack = function(error) {
-      console.log("Video capture error: ", error.code);
-    };
+mainContent.videoSources = [];
 
-  // Put video listeners into place
-  if(navigator.webkitGetUserMedia) { // WebKit-prefixed
-    navigator.webkitGetUserMedia(videoObj, function(stream){
-      video.src = window.URL.createObjectURL(stream);
-      video.play();
-    }, errBack);
-  }
+mainContent.addEventListener('dom-change', function(){
+  chrome.storage.local.get(['mirrored'],
+    function(items) {
+      //Mirrored video by default
+      mainContent.mirrored = ((items.mirrored !== null) ? items.mirrored : true);
+    });
+    
+    MediaStreamTrack.getSources(
+    function (sourceInfos) {
+      for (var i = 0; i !== sourceInfos.length; ++i) {
+        var sourceInfo = sourceInfos[i];
+        var option = document.createElement('option');
+        option.value = sourceInfo.id;
+        if (sourceInfo.kind === 'video') {
+          mainContent.videoSources.push(option);
+        }  
+      }
+      //Set the first source
+      mainContent.swapSource();
+    });
 
 });
 
@@ -54,6 +59,51 @@ mainContent.toggleToolbar = function(){
   }
 };
 
+mainContent._mirroredClass = function(isMirrored) {
+  return ((isMirrored) ? 'mirrored' : '');
+};
+
+mainContent.swapHoriz = function(){
+  mainContent.mirrored = !mainContent.mirrored;
+};
+
+mainContent.sourceIdx = -1;
+
+mainContent.swapSource = function(){
+  mainContent.sourceIdx = mainContent.sourceIdx + 1;
+  
+  if(mainContent.videoSources.length == mainContent.sourceIdx){
+    mainContent.sourceIdx = 0;
+  }
+  
+  // Grab elements, create settings, etc.
+  var video = document.querySelector('#video');
+  var errBack = function(error) {
+    console.log('Video capture error: ', error.code);
+  };
+  
+  var videoObj = {video: true};
+  
+  if (mainContent.videoSources.length > 0) {
+    videoObj = {
+      video: {
+        optional: [{
+          sourceId: mainContent.videoSources[mainContent.sourceIdx].value
+        }]
+      }
+    };
+  }
+  // Put video listeners into place
+  if (navigator.webkitGetUserMedia) { // WebKit-prefixed
+    navigator.webkitGetUserMedia(videoObj, function(stream) {
+      video.src = window.URL.createObjectURL(stream);
+      video.play();
+
+      ChromaKey();
+    }, errBack);
+  }
+};
+
 mainContent.collapseResize = function(){
   resizeWindow();
 };
@@ -71,6 +121,7 @@ mainContent.closeWindow = function(){
     options.left=appWindow.innerBounds.left;
     options.width=appWindow.innerBounds.width;
     options.height=appWindow.innerBounds.height;
+    options.mirrored = mainContent.mirrored;
 
     //Store the variables in the local storage
     chrome.storage.local.set(options, function() {
@@ -101,6 +152,7 @@ mainContent.changeWindowMode = function(){
     options.left=appWindow.innerBounds.left;
     options.width=appWindow.innerBounds.width;
     options.height=appWindow.innerBounds.height;
+    options.mirrored = mainContent.mirrored;
 
     //Store the variables in the local storage
     chrome.storage.local.set(options, function() {

@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Mini Mirror",
-  "version": "3.0.1",
+  "version": "3.0.2",
   "minimum_chrome_version": "28",
   "icons": {
     "16": "icons/videocam_16.png",

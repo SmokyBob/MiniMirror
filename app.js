@@ -98,8 +98,6 @@ mainContent.swapSource = function(){
     navigator.webkitGetUserMedia(videoObj, function(stream) {
       video.src = window.URL.createObjectURL(stream);
       video.play();
-
-      ChromaKey();
     }, errBack);
   }
 };

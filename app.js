@@ -234,7 +234,7 @@ mainContent.changeWindowMode = function() {
 
 mainContent.openOption = function() {
   //Create the new window with the default values or the one from the local storage
-  chrome.app.window.create('options.html', {
+  chrome.app.window.create('options.build.html', {
     id: 'options',
     bounds: {
       width: 480,

@@ -39,7 +39,7 @@ chrome.app.runtime.onLaunched.addListener(function() {
       if (windowFrame == 'none') {
         windowOption.alphaEnabled = true;
       }
-      chrome.app.window.create('app.html', windowOption); 
+      chrome.app.window.create('app.build.html', windowOption); 
     });
 
 });

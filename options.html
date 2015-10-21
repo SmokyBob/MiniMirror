@@ -8,7 +8,9 @@
 
     <link rel="import" href="bower_components/color-picker-element/src/color-picker.html">
     <link rel="import" href="bower_components/paper-slider/paper-slider.html">
-    <link rel="import" href="bower_components/iron-flex-layout/classes.html">
+    <link rel="import" href="bower_components/paper-item/paper-item.html">
+    <link rel="import" href="bower_components/iron-flex-layout/classes/iron-flex-layout.html">
+    <link rel="import" href="bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
     <style>
 
     </style>
@@ -26,6 +28,13 @@
             on-immediate-value-change="immediatePercChanged"
             on-value-change="tolerancePercentageChanged">
             </paper-slider>
+            <paper-dropdown-menu label="Resolutions" on-selected-item-label="resolutionChanged">
+              <paper-menu class="dropdown-content">
+                <template is="dom-repeat" items="{{resolutions}}">
+                  <paper-item>{{item.label}}</paper-item>  
+                </template>
+              </paper-menu>
+            </paper-dropdown-menu>
           </div>
         </div>
       </template>

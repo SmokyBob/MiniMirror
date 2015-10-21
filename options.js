@@ -16,9 +16,23 @@ mainContent.addEventListener('dom-change', function() {
 
   //Get the current color and tolerance
   mainContent.$.colorDisplay.style.backgroundColor =
-          mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor);
+  mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor);
   mainContent.tolerancePercentage = miniMirror.tolerancePercentage;
-
+  
+  mainContent.resolutions = [
+    {label: "96p - 4:3", width:"128", height:"96"},
+    {label: "120p - 4:3", width:"160", height:"120"},
+    {label: "144p - 16:9", width:"256", height:"144"},
+    {label: "240p - 4:3", width:"320", height:"240"},
+    {label: "288p - 4:3", width:"352", height:"288"},
+    {label: "360p - 4:3", width:"480", height:"360"},
+    {label: "360p - 16:9", width:"640", height:"360"},
+    {label: "480p - 16:9", width:"704", height:"480"},
+    {label: "720p - 16:9", width:"1280", height:"720"},
+    {label: "1080p - 16:9", width:"1920", height:"1080"}
+    ];
+    
+    debugger;
 });
 
 mainContent.immediatePercChanged = function(e) {
@@ -40,5 +54,10 @@ mainContent.colorSelected = function(event) {
   //Update the Chroma Key
   miniMirror.selectedColor = selColor.rgb;
   mainContent.$.colorDisplay.style.backgroundColor =
-          mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor);
+  mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor);
+};
+
+mainContent.resolutionChanged = function(event) {
+  console.log('salam');
+  debugger;
 };

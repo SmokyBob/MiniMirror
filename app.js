@@ -5,8 +5,6 @@ var mainContent = document.querySelector('#mainContent');
 
 mainContent.videoSources = [];
 
-
-
 mainContent.addEventListener('dom-change', function() {
   chrome.storage.local.get(['selectedColor', 'tolerancePercentage', 'mirrored'],
     function(items) {
@@ -44,7 +42,7 @@ mainContent.addEventListener('dom-change', function() {
 function ChromaKey() {
   window.requestAnimationFrame(ChromaKey);
   var v = document.querySelector('#video');
-  if (v.paused || v.ended) { return };
+  if (v.paused || v.ended) { return }
 
   var w = v.offsetWidth;
   var h = v.offsetHeight;
@@ -57,30 +55,33 @@ function ChromaKey() {
 
   con.fillRect(0, 0, w, h);//
   con.drawImage(v, 0, 0, w, h);
-
-  var imageData = con.getImageData(0, 0, w, h);
-  var data = imageData.data;
-
-  for (var i = 0; i < data.length; i += 4) {
-    var r = data[i + 0];
-    var g = data[i + 1];
-    var b = data[i + 2];
-
-    //get the tolerance value from the selected percentage
-    var percVal = (255 * (mainContent.tolerancePercentage / 100));
-
-    // compare rgb levels for green and set alphachannel to 0;
-    var selectedColor = mainContent.selectedColor;
-    if ((r >= (selectedColor.r - percVal) &&
-         r <= (selectedColor.r + percVal)) &&
-        (b >= (selectedColor.b - percVal) &&
-         b <= (selectedColor.b + percVal)) &&
-        (g >= (selectedColor.g - percVal) &&
-         g <= (selectedColor.g + percVal))) {
-      data[i + 3] = 0;//Set alpha to 0 to make the pixel transparent
+  
+  //Skip any ChromaKey effect if 0 tollerance
+  if (mainContent.tolerancePercentage !== 0){
+    var imageData = con.getImageData(0, 0, w, h);
+    var data = imageData.data;
+  
+    for (var i = 0; i < data.length; i += 4) {
+      var r = data[i + 0];
+      var g = data[i + 1];
+      var b = data[i + 2];
+  
+      //get the tolerance value from the selected percentage
+      var percVal = (255 * (mainContent.tolerancePercentage / 100));
+  
+      // compare rgb levels for green and set alphachannel to 0;
+      var selectedColor = mainContent.selectedColor;
+      if ((r >= (selectedColor.r - percVal) &&
+           r <= (selectedColor.r + percVal)) &&
+          (b >= (selectedColor.b - percVal) &&
+           b <= (selectedColor.b + percVal)) &&
+          (g >= (selectedColor.g - percVal) &&
+           g <= (selectedColor.g + percVal))) {
+        data[i + 3] = 0;//Set alpha to 0 to make the pixel transparent
+      }
     }
+    con.putImageData(imageData, 0, 0);
   }
-  con.putImageData(imageData, 0, 0);
 }
 
 var resizeWindow = function() {
@@ -100,8 +101,6 @@ var resizeWindow = function() {
     });
   }
 };
-
-
 
 var collapseTimeout = null;
 

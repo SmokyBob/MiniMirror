@@ -15,8 +15,9 @@ mainContent.addEventListener('dom-change', function() {
   }
 
   //Get the current color and tolerance
-  mainContent.$.colorDisplay.style.backgroundColor =
-  mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor);
+  mainContent.$.colorDisplay.style.backgroundColor = ""; //TODO: mainContent.$.colorPicker is an RGB object, set the background color with rgb(x,y,z); 
+  // mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor);
+  // mainContent.$.colorPicker.rgb2hsv;
   mainContent.tolerancePercentage = miniMirror.tolerancePercentage;
   
   mainContent.resolutions = [
@@ -32,7 +33,6 @@ mainContent.addEventListener('dom-change', function() {
     {label: "1080p - 16:9", width:"1920", height:"1080"}
     ];
     
-    debugger;
 });
 
 mainContent.immediatePercChanged = function(e) {
@@ -50,14 +50,17 @@ mainContent.tolerancePercentageChanged = function(e) {
 };
 
 mainContent.colorSelected = function(event) {
-  var selColor = event.detail;
-  //Update the Chroma Key
-  miniMirror.selectedColor = selColor.rgb;
-  mainContent.$.colorDisplay.style.backgroundColor =
-  mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor);
+  // var selColor = event.detail;
+  // //Update the Chroma Key
+  // miniMirror.selectedColor = selColor.rgb;
+  // mainContent.$.colorDisplay.style.backgroundColor =
+  // mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor);
+  
+  miniMirror.selectedColor = mainContent.$.colorPicker.color;
+  //TODO: mainContent.$.colorPicker is an RGB object, set the background color with rgb(x,y,z);
+  mainContent.$.colorDisplay.style.backgroundColor = "";
 };
 
 mainContent.resolutionChanged = function(event) {
   console.log('salam');
-  debugger;
 };

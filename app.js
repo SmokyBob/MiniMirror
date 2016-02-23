@@ -24,25 +24,27 @@ mainContent.addEventListener('dom-change', function() {
       mainContent.mirrored = ((items.mirrored !== null) ? items.mirrored : true);
     });
   
-  MediaStreamTrack.getSources(
-    function (sourceInfos) {
-      for (var i = 0; i !== sourceInfos.length; ++i) {
-        var sourceInfo = sourceInfos[i];
+  navigator.mediaDevices.enumerateDevices()
+  .then(function(devices) {
+    devices.forEach(function(device) {
         var option = document.createElement('option');
-        option.value = sourceInfo.id;
-        if (sourceInfo.kind === 'video') {
+        option.value = device.id;
+        if (device.kind === 'video') {
           mainContent.videoSources.push(option);
-        }  
-      }
-      //Set the first source
-      mainContent.swapSource();
+        }
     });
+    //Set the first source
+    mainContent.swapSource();
+  })
+  .catch(function(err) {
+    console.log(err.name + ": " + err.message);
+  });
 });
 
 function ChromaKey() {
   window.requestAnimationFrame(ChromaKey);
   var v = document.querySelector('#video');
-  if (v.paused || v.ended) { return }
+  if (v.paused || v.ended) { return; }
 
   var w = v.offsetWidth;
   var h = v.offsetHeight;
@@ -91,7 +93,6 @@ var resizeWindow = function() {
   if (visibileContent) {
     chrome.storage.local.get('windowFrame', function(items) {
       var headerHeight = 0;
-      var windowFrame = 'none';
 
       if (items.windowFrame != 'none') {
         headerHeight = 33;
@@ -142,7 +143,7 @@ mainContent.swapSource = function(){
     console.log('Video capture error: ', error.code);
   };
   
-  var videoObj = {video: true};
+  var videoObj = {video: {}};
   
   if (mainContent.videoSources.length > 0) {
     videoObj = {

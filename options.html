@@ -6,7 +6,7 @@
     
     <script src="setShadow.js"></script>
 
-    <link rel="import" href="bower_components/paper-color-picker/paper-color-circle.html">
+    <link rel="import" href="bower_components/color-picker-element/dist/color-picker.html">
     <link rel="import" href="bower_components/paper-slider/paper-slider.html">
     <link rel="import" href="bower_components/paper-item/paper-item.html">
     <link rel="import" href="bower_components/iron-flex-layout/iron-flex-layout-classes.html">
@@ -18,9 +18,7 @@
   <body class="fullbleed">
       <template id="optionContent" is="dom-bind" >
         <div class="layout horizontal">
-          <!--<color-picker id="colorPicker" on-color-changed="colorSelected" width="360" height="360"></color-picker>-->
-          <!--TODO: check why the elements seems to not be correctly organized horizontally-->
-          <paper-color-circle id="colorPicker" style="width:360px;height:360px;" on-color-changed="colorSelected"></paper-color-circle>
+          <color-picker id="colorPicker" on-colorselected="colorSelected" width="240" height="240"></color-picker>
           <div class="layout vertical flex" style="padding-left:5px">
             <div>Selected Color</div>
             <div style="height: 30px;" id="colorDisplay"></div>

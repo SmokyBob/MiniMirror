@@ -27,8 +27,11 @@
       video {
         hidden: true;
       }
-      .mirrored{
+      .mirrored {
         transform: rotateY(180deg);
+      }
+      body {
+        margin: 0px;
       }
     </style>
   </head>
@@ -40,7 +43,7 @@
               <div class="title flex">Mini Mirror</div>
               
               <paper-icon-button icon="input" on-tap="swapSource" title="Swap camera sources"></paper-icon-button>
-              <paper-icon-button icon="swap-horiz" on-tap="swapHoriz" title="Inver Image horizontally"></paper-icon-button>
+              <paper-icon-button icon="swap-horiz" on-tap="swapHoriz" title="Invert Image horizontally"></paper-icon-button>
               <paper-icon-button icon="settings" on-tap="openOption" title="Setting"></paper-icon-button>
               <paper-icon-button icon="settings-overscan" on-tap="changeWindowMode" title="Change window Mode"></paper-icon-button>
               <paper-icon-button icon="close" on-tap="closeWindow"></paper-icon-button>

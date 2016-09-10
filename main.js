@@ -1,46 +1,61 @@
-/**
- * Listens for the app launching then creates the window
- *
- * @see http://developer.chrome.com/trunk/apps/app.runtime.html
- * @see http://developer.chrome.com/trunk/apps/app.window.html
- */
-chrome.app.runtime.onLaunched.addListener(function() {
+const {app, BrowserWindow} = require('electron');
 
-  //Defaults
-  var width = 640;
-  var height = 360;
-  var left = Math.round((screen.availWidth - width) / 2);
-  var top = Math.round((screen.availHeight - height) / 2);
-  var windowFrame = 'none';
+// Keep a global reference of the window object, if you don't, the window will
+// be closed automatically when the JavaScript object is garbage collected.
+let mainWin;
 
-  //Get the variables from the local storage
-  chrome.storage.local.get(['windowFrame', 'top', 'left', 'width', 'height'],
-    function(items) {
-      if (items.windowFrame) {
-        windowFrame = ((items.windowFrame) ? items.windowFrame : 'none');
-        width = ((items.width) ? items.width : 640);
-        height = ((items.height) ? items.height : 360);
-        left = ((items.left) ? items.left : Math.round((screen.availWidth - width) / 2));
-        top = ((items.top) ? items.top : Math.round((screen.availHeight - height) / 2));
-        
-      }
-      var windowOption = {
-        //id:'miniMirror',
-        bounds: {
-          width: width,
-          height: height,
-          top:top,
-          left:left
-        },
-        resizable:true,
-        frame:windowFrame,
-        alwaysOnTop:true
-      };
-      if (windowFrame == 'none') {
-        windowOption.alphaEnabled = true;
-      }
-      chrome.app.window.create('app.build.html', windowOption); 
-    });
+function createWindow () {
+  let winWidth = 640;//TODO: read from local storage configs
+  let winHeight = 360;//TODO: read from local storage configs
 
+  let frameless = true; //TODO: read from local storage configs
+
+  // Create the browser window.
+  mainWin = new BrowserWindow({
+    width: winWidth, 
+    height: winHeight,
+    center: true,
+    alwaysOnTop: true,
+    icon: '/icons/videocam_Edge128.png',
+    frame: !frameless
+  });
+
+  // and load the app.html of the app.
+  mainWin.loadURL(`file://${__dirname}/app.html`);
+
+  // Open the DevTools.
+  mainWin.webContents.openDevTools();
+
+  // Emitted when the window is closed.
+  mainWin.on('closed', () => {
+    // Dereference the window object, usually you would store windows
+    // in an array if your app supports multi windows, this is the time
+    // when you should delete the corresponding element.
+    mainWin = null;
+  });
+}
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', createWindow);
+
+// Quit when all windows are closed.
+app.on('window-all-closed', () => {
+  // On macOS it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
 });
 
+app.on('activate', () => {
+  // On macOS it's common to re-create a window in the app when the
+  // dock icon is clicked and there are no other windows open.
+  if (mainWin === null) {
+    createWindow();
+  }
+});
+
+// In this file you can include the rest of your app's specific main process
+// code. You can also put them in separate files and require them here.

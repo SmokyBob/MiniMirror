@@ -1,0 +1,4 @@
+{
+    // {int} Specify the ECMAScript version to which the code must adhere.
+    "esversion"     : 6
+}

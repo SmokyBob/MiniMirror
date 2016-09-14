@@ -1,11 +1,4 @@
-//This will be set by the Script that create this window
-var indexedDB = window.indexedDB || window.mozIndexedDB || window.webkitIndexedDB || window.msIndexedDB || window.shimIndexedDB;
-
-var dbName = "mini-mirror";
-var dbVersion = 1.0;
-var appDB = {};
-
-//TODO: instead of localStorage, use indexedDB
+const {ipcRenderer} = require('electron');
 
 //Use Polymer Bindings
 var mainContent = document.querySelector('#mainContent');
@@ -19,18 +12,19 @@ mainContent.addEventListener('dom-change', function() {
   //       mainContent.selectedColor = items.selectedColor;
   //       mainContent.tolerancePercentage = items.tolerancePercentage;
   //     } else {
-  //       mainContent.selectedColor = {};
-  //       //Really Green Value
-  //       mainContent.selectedColor.r = 56;
-  //       mainContent.selectedColor.g = 166;
-  //       mainContent.selectedColor.b = 0;
-  //       //Default tolerance 20%
-  //       mainContent.tolerancePercentage = 20;
+         mainContent.selectedColor = {};
+         //Really Green Value
+         mainContent.selectedColor.r = 56;
+         mainContent.selectedColor.g = 166;
+         mainContent.selectedColor.b = 0;
+         //Default tolerance 20%
+         mainContent.tolerancePercentage = 20;
   //     }
-  //     //Mirrored video by default
+       //Mirrored video by default
+       mainContent.mirrored = true;
   //     mainContent.mirrored = ((items.mirrored !== null) ? items.mirrored : true);
   //   });
-  
+
   navigator.mediaDevices.enumerateDevices()
   .then(function(devices) {
     devices.forEach(function(device) {
@@ -42,6 +36,7 @@ mainContent.addEventListener('dom-change', function() {
     });
     //Set the first source
     mainContent.swapSource();
+    
   })
   .catch(function(err) {
     console.log(err.name + ": " + err.message);
@@ -92,21 +87,27 @@ function ChromaKey() {
     con.putImageData(imageData, 0, 0);
   }
 }
+var firstResize = true;
 
 var resizeWindow = function() {
-  var appWindow = window;
   var visibileContent = document.querySelector('#videoscreen');
 
   if (visibileContent) {
+    
     // chrome.storage.local.get('windowFrame', function(items) {
-    //   var headerHeight = 0;
-
-    //   if (items.windowFrame != 'none') {
-    //     headerHeight = 33;
-    //   }
+    let headerHeight = 0;
+    // if (items.windowFrame != 'none') {
+      // headerHeight = 33;
+    // }
+    //Send the change Open Option command
+    ipcRenderer.send('async-ops', {
+        command: 'adaptSize',
+        height: visibileContent.offsetHeight + headerHeight + 5
+      });
     //   appWindow.resizeTo(visibileContent.offsetWidth,
     //                      visibileContent.offsetHeight + headerHeight);
     // });
+    firstResize = false;
   }
 };
 
@@ -167,13 +168,17 @@ mainContent.swapSource = function(){
       video.src = window.URL.createObjectURL(stream);
       video.play();
 
-      // ChromaKey();
+      ChromaKey();
     }, errBack);
   }
+  
 };
 
 mainContent.collapseResize = function() {
-  resizeWindow();
+  setTimeout(function() {
+    resizeWindow();
+  }, 100);
+  
 };
 
 mainContent.closeWindow = function() {
@@ -206,6 +211,11 @@ mainContent.closeWindow = function() {
   //   });
   // });
 
+  //TODO: Save the infos in the main thread
+  
+  //Send the fullClose command 
+  ipcRenderer.send('async-ops', {command: 'fullClose'}); 
+
 };
 
 mainContent.changeWindowMode = function() {
@@ -237,6 +247,9 @@ mainContent.changeWindowMode = function() {
   //       });
   // });
 
+  //Send the change Frame Mode
+  ipcRenderer.send('async-ops', {command: 'changeFrame', param: false});
+
 };
 
 mainContent.openOption = function() {
@@ -251,4 +264,8 @@ mainContent.openOption = function() {
   //   frame: 'chrome',
   //   alwaysOnTop:true
   // });
+
+  //Send the change Open Option command
+  ipcRenderer.send('async-ops', {command: 'openOptions'});
+  
 };

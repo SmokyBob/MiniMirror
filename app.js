@@ -48,6 +48,8 @@ function ChromaKey() {
   // infos: http://alistapart.com/article/finessing-fecolormatrix
   //        See elim-blue
   //        RGBA to Color Matrix : http://blog.andresgalante.com/random/2016/07/09/rgba-to-fecolormatrix.html
+  // Or better: https://github.com/brianchirls/Seriously.js
+  //https://github.com/brianchirls/Seriously.js/wiki/Chroma-Key
 
   window.requestAnimationFrame(ChromaKey);
   if (firstResize){

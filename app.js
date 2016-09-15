@@ -45,6 +45,9 @@ mainContent.addEventListener('dom-change', function() {
 
 function ChromaKey() {
   window.requestAnimationFrame(ChromaKey);
+  if (firstResize){
+    resizeWindow();
+  }
   var v = document.querySelector('#video');
   if (v.paused || v.ended) { return; }
 
@@ -104,9 +107,7 @@ var resizeWindow = function() {
         command: 'adaptSize',
         height: visibileContent.offsetHeight + headerHeight + 5
       });
-    //   appWindow.resizeTo(visibileContent.offsetWidth,
-    //                      visibileContent.offsetHeight + headerHeight);
-    // });
+    
     firstResize = false;
   }
 };
@@ -220,51 +221,13 @@ mainContent.closeWindow = function() {
 
 mainContent.changeWindowMode = function() {
 
-  var windowFrame = 'chrome';
-  // chrome.storage.local.get('windowFrame', function(items) {
-  //   if (items) {
-  //     windowFrame = items.windowFrame;
-  //     if (windowFrame == 'none') {
-  //       windowFrame = 'chrome';
-  //     } else {
-  //       windowFrame = 'none';
-  //     }
-  //   }
-  //   var options = {};
-  //   options.windowFrame = windowFrame;
-  //   var appWindow = chrome.app.window.current();
-  //   options.top = appWindow.innerBounds.top;
-  //   options.left = appWindow.innerBounds.left;
-  //   options.width = appWindow.innerBounds.width;
-  //   options.height = appWindow.innerBounds.height;
-  //   options.mirrored = mainContent.mirrored;
-
-  //   //Store the variables in the local storage
-  //   chrome.storage.local.set(options, function() {
-  //         // Notify that we saved.
-  //         //message('Settings saved');
-  //         chrome.runtime.reload(); //Reload the app
-  //       });
-  // });
-
   //Send the change Frame Mode
-  ipcRenderer.send('async-ops', {command: 'changeFrame', param: false});
+  ipcRenderer.send('async-ops', {command: 'changeFrame'});
 
 };
 
 mainContent.openOption = function() {
-  //Create the new window with the default values or the one from the local storage
-  // chrome.app.window.create('options.build.html', {
-  //   id: 'options',
-  //   bounds: {
-  //     width: 480,
-  //     height: 360
-  //   },
-  //   resizable:false,
-  //   frame: 'chrome',
-  //   alwaysOnTop:true
-  // });
-
+  
   //Send the change Open Option command
   ipcRenderer.send('async-ops', {command: 'openOptions'});
   

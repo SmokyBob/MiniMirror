@@ -19,7 +19,7 @@ function createMainWindow () {
     center: true,
     alwaysOnTop: true,
     useContentSize: true,
-    icon: '/icons/videocam_Edge128.png',
+    icon: `/icons/videocam_Edge128.png`,
     frame: !frameless,
     transparent: true
   });
@@ -27,23 +27,13 @@ function createMainWindow () {
   // and load the app.html of the app.
   mainWin.loadURL(`file://${__dirname}/app.html`);
 
-  // Open the DevTools.
-  //mainWin.webContents.openDevTools();
-
-  // Emitted when the window is closed.
-  mainWin.on('closed', () => {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
-    mainWin = null;
-  });
 }
 
 function createOptionWindow() {
   optWindow = new BrowserWindow({
     frame: true,
     parent: mainWin,
-    modal: true
+    titleBarStyle: 'hidden'
   });
 
   //Load the option window
@@ -58,13 +48,13 @@ function createOptionWindow() {
 app.on('ready', createMainWindow);
 
 // Quit when all windows are closed.
-// app.on('window-all-closed', () => {
-//   // On macOS it is common for applications and their menu bar
-//   // to stay active until the user quits explicitly with Cmd + Q
-//   if (process.platform !== 'darwin') {
-//     app.quit();
-//   }
-// });
+app.on('window-all-closed', () => {
+  // On macOS it is common for applications and their menu bar
+  // to stay active until the user quits explicitly with Cmd + Q
+  if (process.platform !== 'darwin') {
+    app.quit();
+  }
+});
 
 app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
@@ -91,9 +81,10 @@ ipcMain.on('async-ops', (event, arg) => {
       break;
     case "changeFrame":
       //Change the frame and reopen the main window
-      frameless = arg.param;
-      mainWin.close();
+      frameless = !frameless;
+      let oldWindow = mainWin;
       createMainWindow();
+      oldWindow.close();
       break;
     case "fullClose":
       //Close all the windows and quit the app
@@ -103,10 +94,9 @@ ipcMain.on('async-ops', (event, arg) => {
       if (optWindow)
         optWindow.close();
 
-      app.quit();
       break;
     default:
-      console.log("Sorry, command not valid " + expr + ".");
+      console.log("Sorry, command not valid " + arg + ".");
   }
   
 });

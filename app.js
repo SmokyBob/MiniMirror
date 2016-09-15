@@ -44,27 +44,34 @@ mainContent.addEventListener('dom-change', function() {
 });
 
 function ChromaKey() {
+  // TODO: see if feColorFilter has better performance
+  // infos: http://alistapart.com/article/finessing-fecolormatrix
+  //        See elim-blue
+  //        RGBA to Color Matrix : http://blog.andresgalante.com/random/2016/07/09/rgba-to-fecolormatrix.html
+
   window.requestAnimationFrame(ChromaKey);
   if (firstResize){
     resizeWindow();
   }
-  var v = document.querySelector('#video');
-  if (v.paused || v.ended) { return; }
 
-  var w = v.offsetWidth;
-  var h = v.offsetHeight;
 
-  //set the canvas Dimensions
-  var canvas = document.getElementById('videoscreen');
-  canvas.setAttribute('width', w);
-  canvas.setAttribute('height', h);
-  var con = canvas.getContext('2d');
-
-  con.fillRect(0, 0, w, h);//
-  con.drawImage(v, 0, 0, w, h);
-  
-  //Skip any ChromaKey effect if 0 tollerance
+  //Skip any ChromaKey effect if 0 tolerance
   if (mainContent.tolerancePercentage !== 0){
+    var v = document.querySelector('#video');
+    if (v.paused || v.ended) { return; }
+
+    var w = v.offsetWidth;
+    var h = v.offsetHeight;
+
+    //set the canvas Dimensions
+    var canvas = document.getElementById('videoscreen');
+    canvas.setAttribute('width', w);
+    canvas.setAttribute('height', h);
+    var con = canvas.getContext('2d');
+
+    con.fillRect(0, 0, w, h);//
+    con.drawImage(v, 0, 0, w, h);
+  
     var imageData = con.getImageData(0, 0, w, h);
     var data = imageData.data;
   

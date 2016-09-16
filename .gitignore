@@ -2,3 +2,4 @@ bower_components/
 vulcanized.html
 vulcanized.js
 *.build.*
+node_modules/

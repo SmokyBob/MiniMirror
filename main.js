@@ -1,4 +1,7 @@
 const {app, BrowserWindow, ipcMain, ipcRenderer} = require('electron');
+var idbKeyval = require('idb-keyval');
+
+//Info x IndexedDb https://www.npmjs.com/package/idb-keyval
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -7,6 +10,7 @@ let optWindow;
 let frameless = true;
 
 function createMainWindow () {
+  //Read the props from the IndexedDb
   let winWidth = 640;//TODO: read from local storage configs
   let winHeight = 480;//TODO: read from local storage configs
 

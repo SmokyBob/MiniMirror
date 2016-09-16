@@ -1,5 +1,8 @@
 {
   "name": "mini-mirror",
   "version": "5.0.0",
-  "main": "main.js"
+  "main": "main.js",
+  "dependencies": {
+    "idb-keyval": "^2.1.2"
+  }
 }

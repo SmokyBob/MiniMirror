@@ -14,6 +14,8 @@ mainContent.addEventListener('dom-change', function() {
     }
   }
 
+
+  //TODO: get the parameters sync from the main thread
   //Get the current color and tolerance
   mainContent.$.colorDisplay.style.backgroundColor =
       mainContent.$.colorPicker.rgbToHex(miniMirror.selectedColor); 
